@@ -26,6 +26,9 @@ public class AuthorFactory {
     private final PhotoFactory photoFactory;
 
     public Author newAuthor(String name, String bio, String photoURI){
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Author name cannot be null or empty");
+        }
         return new Author(idGeneratorService.generateId(name), name, bio, photoURI, authorNumberFactory, nameFactory, bioFactory, photoFactory);
     }
 }

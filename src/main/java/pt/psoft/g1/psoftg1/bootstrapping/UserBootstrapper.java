@@ -45,15 +45,13 @@ public class UserBootstrapper implements CommandLineRunner {
     }
 
     private void createReaders() {
-        //Reader1 - Manuel
+        // Reader1 - Manuel
         if (userRepository.findByUsername("manuel@gmail.com").isEmpty()) {
             final Reader manuel = Reader.newReader("manuel@gmail.com", "Manuelino123!", "Manuel Sarapinto das Coives");
             userRepository.save(manuel);
 
-            //String dateFormat = LocalDateTime.of(LocalDate.of(2024, 1, 20), LocalTime.now()).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"));
-            String dateFormat = LocalDateTime.of(2024,1,20,0,0,0,0).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"));
-            String query = String.format("UPDATE T_USER SET CREATED_AT = '%s' WHERE USERNAME = '%s'", dateFormat, manuel.getUsername());
-            //jdbcTemplate.update(query);
+            String dateFormat = LocalDateTime.of(2024,1,20,0,0,0).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            String query = String.format("UPDATE dbo.T_USER SET CREATED_AT = '%s' WHERE USERNAME = '%s'", dateFormat, manuel.getUsername());
             queriesToExecute.add(query);
 
             Optional<ReaderDetails> readerDetails1= readerRepository.findByReaderNumber(LocalDate.now().getYear() + "/1");

@@ -31,8 +31,8 @@ public class AuthController {
     }
 */
     @GetMapping("/login/oauth2/success")
-    public String redirect(@AuthenticationPrincipal OAuth2AuthenticationToken authentication) {
+    public String loginSuccess(OAuth2AuthenticationToken authentication) {
         String email = authentication.getPrincipal().getAttribute("email");
-        return "Login realizado com sucesso!"; // Redirecione para a página desejada após o login
+        return "redirect:/home"; // Redireciona para /home após sucesso
     }
 }

@@ -27,7 +27,7 @@ public class BookMongoRepository implements BookRepository {
     public BookMongoRepository(AuthorFactory authorFactory) {
         this.authorFactory = authorFactory;
 
-        // Utilizando o AuthorFactory para criar instâncias completas de Author
+        // Utilizao AuthorFactory para criar instâncias completas de Author
         staticBooks.add(new Book("9789720706386", "O País das Pessoas de Pernas Para o Ar",
                 "Histórias divertidas e com múltiplos significados",
                 new Genre("Infantil"),
@@ -147,13 +147,13 @@ public class BookMongoRepository implements BookRepository {
             }
         }
 
-        // Retorna os livros recomendados com base no gênero identificado
+        // Retorna os livros recomendados com base no género identificado
         return findXBooksByGenre(genre, numberOfBooks);
     }
 
-    // Método auxiliar para identificar o gênero mais emprestado de um leitor específico
+    // Método auxiliar para identificar o género mais emprestado de um leitor específico
     public String getMostLentGenreByReader(String readerNumber) {
-        // Simula a contagem de empréstimos por gênero usando streams e coletores
+        // Simula a contagem de empréstimos por género usando streams e coletores
         return staticBooks.stream()
                 .filter(book -> book.getGenre() != null && book.getAuthors() != null)
                 .flatMap(book -> book.getAuthors().stream()

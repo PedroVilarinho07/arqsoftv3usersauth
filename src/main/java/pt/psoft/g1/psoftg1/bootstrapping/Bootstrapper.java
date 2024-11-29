@@ -13,13 +13,16 @@ import pt.psoft.g1.psoftg1.authormanagement.model.Author;
 import pt.psoft.g1.psoftg1.authormanagement.repositories.AuthorRepository;
 import pt.psoft.g1.psoftg1.bookmanagement.factories.BookFactory;
 import pt.psoft.g1.psoftg1.bookmanagement.model.Book;
+import pt.psoft.g1.psoftg1.bookmanagement.model.Isbn;
 import pt.psoft.g1.psoftg1.genremanagement.model.Genre;
 import pt.psoft.g1.psoftg1.bookmanagement.repositories.BookRepository;
 import pt.psoft.g1.psoftg1.genremanagement.repositories.GenreRepository;
 import pt.psoft.g1.psoftg1.exceptions.NotFoundException;
 import pt.psoft.g1.psoftg1.lendingmanagement.factories.LendingFactory;
+import pt.psoft.g1.psoftg1.lendingmanagement.model.Lending;
 import pt.psoft.g1.psoftg1.lendingmanagement.repositories.LendingRepository;
 import pt.psoft.g1.psoftg1.readermanagement.model.ReaderDetails;
+import pt.psoft.g1.psoftg1.readermanagement.model.ReaderNumber;
 import pt.psoft.g1.psoftg1.readermanagement.repositories.ReaderRepository;
 import pt.psoft.g1.psoftg1.shared.model.domainService.IIdGenerator;
 import pt.psoft.g1.psoftg1.shared.repositories.PhotoRepository;
@@ -60,13 +63,9 @@ public class Bootstrapper implements CommandLineRunner {
         createAuthors();
         createGenres();
         createBooks();
-        createLendings();
-        /*
         loadForbiddenNames();
-
+        createLendings();
         createPhotos();
-
-         */
     }
 
     private void createAuthors() {
@@ -77,10 +76,9 @@ public class Bootstrapper implements CommandLineRunner {
             authorRepository.save(a1);
         }
         if (authorRepository.searchByNameName("Antoine de Saint Exupéry").isEmpty()) {
-            Author a2 = authorFactory.newAuthor("Antoine de Saint Exupéry",
+            authorRepository.save(authorFactory.newAuthor("Antoine de Saint Exupéry",
                     "Antoine de Saint-Exupéry nasceu a 29 de junho de 1900 em Lyon. Faz o seu batismo de voo aos 12 anos, aos 22 torna-se piloto militar e é como capitão que em 1939 se junta à Força Aérea francesa em luta contra a ocupação nazi. A aviação e a guerra viriam a revelar-se elementos centrais de toda a sua obra literária, onde se destacam títulos como Correio do Sul (1929), o seu primeiro romance, Voo Noturno (1931), que logo se tornou um êxito de vendas internacional, e Piloto de Guerra (1942), retrato da sua participação na Segunda Guerra Mundial. Em 1943 publicaria aquela que é reconhecida como a sua obra-prima, O Principezinho, um dos livros mais traduzidos em todo o mundo. A sua morte, aos 44 anos, num acidente de aviação durante uma missão de reconhecimento no sul de França, permanece ainda hoje um mistério.",
-                    null);
-            authorRepository.save(a2);
+                    null));
         }
         if (authorRepository.searchByNameName("Alexandre Pereira").isEmpty()) {
             authorRepository.save(authorFactory.newAuthor("Alexandre Pereira",
@@ -427,6 +425,7 @@ public class Bootstrapper implements CommandLineRunner {
                             readerDetails4.get(), readerDetails5.get(), readerDetails6.get()});
         }
 
+        Lending lending;
         LocalDate startDate;
         LocalDate returnedDate;
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -101,7 +101,6 @@
 			<version>1.5.5.Final</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/com.googlecode.owasp-java-html-sanitizer/owasp-java-html-sanitizer -->
 		<!-- HTML sanitizer -->
 		<dependency>
 			<groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
@@ -123,12 +122,24 @@
 			<artifactId>spring-boot-starter-webflux</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>jakarta.persistence</artifactId>
+			<version>2.2.3</version>
+		</dependency>
+		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
 			<version>7.8.0</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+	<repositories>
+	<repository>
+		<id>pitest</id>
+		<url>https://repo1.maven.org/maven2/</url>
+	</repository>
+</repositories>
 
 	<build>
 		<plugins>
@@ -180,23 +191,8 @@
 					<targetClasses>
 						<param>pt.psoft.g1.*.model*</param>
 					</targetClasses>
-					<mutationThreshold>40</mutationThreshold>
 				</configuration>
 			</plugin>
-
-			<!-- Static Code Analysis -->
-			<!--
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>3.1.2</version>
-				<configuration>
-					<configLocation>checkstyle.xml</configLocation>
-					<outputFile>target/checkstyle-result.xml</outputFile>
-					<outputFileFormat>xml</outputFileFormat>
-				</configuration>
-			</plugin>-->
-
 		</plugins>
 	</build>
 

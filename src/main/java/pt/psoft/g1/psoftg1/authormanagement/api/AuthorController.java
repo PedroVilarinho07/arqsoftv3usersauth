@@ -51,8 +51,7 @@ public class AuthorController {
     @Operation(summary = "Creates a new Author")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<AuthorResponseDTO> create(@Valid CreateAuthorRequest resource) {
-        //Guarantee that the client doesn't provide a link on the body, null = no photo or error
+    public ResponseEntity<AuthorResponseDTO> create(@Valid @RequestBody CreateAuthorRequest resource) {
         resource.setPhotoURI(null);
         MultipartFile file = resource.getPhoto();
 

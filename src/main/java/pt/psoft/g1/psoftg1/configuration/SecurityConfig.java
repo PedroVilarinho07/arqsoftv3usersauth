@@ -160,13 +160,15 @@ public class SecurityConfig {
         // Set up OAuth2 login with a custom login page
         http.oauth2Login(oauth2 -> oauth2
                 .loginPage("/login")
-                .defaultSuccessUrl("/home", true));
+                .defaultSuccessUrl("/home", true)
+                .failureUrl("/login?error=true"));
 
         // Set up OAuth2 resource server for JWT handling
         http.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())));
 
         return http.build();
     }
+
 
 
 
