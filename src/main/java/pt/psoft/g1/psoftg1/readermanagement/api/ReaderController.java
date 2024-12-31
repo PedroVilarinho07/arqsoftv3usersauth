@@ -24,10 +24,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pt.psoft.g1.psoftg1.exceptions.NotFoundException;
 import pt.psoft.g1.psoftg1.external.service.ApiNinjasService;
-import pt.psoft.g1.psoftg1.lendingmanagement.dto.response.LendingResponseDTO;
-import pt.psoft.g1.psoftg1.lendingmanagement.api.LendingViewMapper;
-import pt.psoft.g1.psoftg1.lendingmanagement.model.Lending;
-import pt.psoft.g1.psoftg1.lendingmanagement.services.LendingService;
+
 import pt.psoft.g1.psoftg1.readermanagement.dto.response.ReaderCountResponseDTO;
 import pt.psoft.g1.psoftg1.readermanagement.dto.response.ReaderQuoteResponseDTO;
 import pt.psoft.g1.psoftg1.readermanagement.dto.response.ReaderResponseDTO;
@@ -59,8 +56,7 @@ class ReaderController {
     private final ReaderService readerService;
     private final UserService userService;
     private final ReaderViewMapper readerViewMapper;
-    private final LendingService lendingService;
-    private final LendingViewMapper lendingViewMapper;
+
     private final ConcurrencyService concurrencyService;
     private final FileStorageService fileStorageService;
     private final ApiNinjasService apiNinjasService;
@@ -278,47 +274,7 @@ class ReaderController {
                 .body(readerViewMapper.toReaderView(readerDetails));
     }
 
-    @Operation(summary = "Gets the lendings of this reader by ISBN")
-    @GetMapping(value = "/{year}/{seq}/lendings")
-    public List<LendingResponseDTO> getReaderLendings(
-            Authentication authentication,
-            @PathVariable("year")
-                @Parameter(description = "The year of the Reader to find")
-                final Integer year,
-            @PathVariable("seq")
-                @Parameter(description = "The sequencial of the Reader to find")
-                final Integer seq,
-            @RequestParam("isbn")
-                @Parameter(description = "The ISBN of the Book to find")
-                final String isbn,
-            @RequestParam(value = "returned", required = false)
-                @Parameter(description = "Filter by returned")
-                final Optional<Boolean> returned)
-    {
-        String urlReaderNumber = year + "/" + seq;
 
-        final var urlReaderDetails = readerService.findByReaderNumber(urlReaderNumber)
-                .orElseThrow(() -> new NotFoundException(Lending.class, urlReaderNumber));
-
-        User loggedUser = userService.getAuthenticatedUser(authentication);
-
-        //if Librarian is logged in, skip ahead
-        if (!(loggedUser instanceof Librarian)) {
-            final var loggedReaderDetails = readerService.findByUsername(loggedUser.getUsername())
-                    .orElseThrow(() -> new NotFoundException(ReaderDetails.class, loggedUser.getUsername()));
-
-            //if logged Reader matches the one associated with the lendings, skip ahead
-            if(!Objects.equals(loggedReaderDetails.getReaderNumber(), urlReaderDetails.getReaderNumber())){
-                throw new AccessDeniedException("Reader does not have permission to view these lendings");
-            }
-        }
-        final var lendings = lendingService.listByReaderNumberAndIsbn(urlReaderNumber, isbn, returned);
-
-        if(lendings.isEmpty())
-            throw new NotFoundException("No lendings found with provided ISBN");
-
-        return lendingViewMapper.toLendingView(lendings);
-    }
 
     @GetMapping("/top5")
     public ListResponse<ReaderResponseDTO> getTop() {

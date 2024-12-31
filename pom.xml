@@ -132,6 +132,11 @@
 			<version>7.8.0</version>
 			<scope>test</scope>
 		</dependency>
+		<!-- AMQP -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-amqp</artifactId>
+		</dependency>
 	</dependencies>
 
 	<repositories>

@@ -9,11 +9,13 @@ import pt.psoft.g1.psoftg1.genremanagement.model.Genre;
 import pt.psoft.g1.psoftg1.genremanagement.repositories.GenreRepository;
 import pt.psoft.g1.psoftg1.exceptions.ConflictException;
 import pt.psoft.g1.psoftg1.exceptions.NotFoundException;
+import pt.psoft.g1.psoftg1.readermanagement.dto.amkp.ReaderDTOAmqp;
 import pt.psoft.g1.psoftg1.readermanagement.dto.request.CreateReaderRequest;
 import pt.psoft.g1.psoftg1.readermanagement.dto.request.ReaderBookCountDTO;
 import pt.psoft.g1.psoftg1.readermanagement.dto.request.SearchReadersQuery;
 import pt.psoft.g1.psoftg1.readermanagement.dto.request.UpdateReaderRequest;
 import pt.psoft.g1.psoftg1.readermanagement.model.ReaderDetails;
+import pt.psoft.g1.psoftg1.readermanagement.publishers.ReaderEventsPublisher;
 import pt.psoft.g1.psoftg1.readermanagement.repositories.ReaderRepository;
 import pt.psoft.g1.psoftg1.shared.repositories.ForbiddenNameRepository;
 import pt.psoft.g1.psoftg1.shared.repositories.PhotoRepository;
@@ -36,6 +38,7 @@ public class ReaderServiceImpl implements ReaderService {
     private final ForbiddenNameRepository forbiddenNameRepository;
     private final PhotoRepository photoRepository;
 
+    private final ReaderEventsPublisher readerEventsPublisher;
 
     @Override
     public ReaderDetails create(CreateReaderRequest request, String photoURI) {
@@ -203,4 +206,44 @@ public class ReaderServiceImpl implements ReaderService {
 
         return list;
     }
+
+    @Override
+    public ReaderDetails create(ReaderDTOAmqp readerDTOAmqp) {
+        final String readerNumber = readerDTOAmqp.getReaderNumber();
+        final String username = readerDTOAmqp.getUsername();
+        final String birthDate = readerDTOAmqp.getBirthDate();
+        final String phoneNumber = readerDTOAmqp.getPhoneNumber();
+        final boolean gdprConsent = readerDTOAmqp.isGdprConsent();
+        final boolean marketingConsent = readerDTOAmqp.isMarketingConsent();
+        final boolean thirdPartyConsent = readerDTOAmqp.isThirdPartyConsent();
+        final List<String> interestListStrings = readerDTOAmqp.getInterestList();
+
+        List<Genre> interestList = getGenreListFromStringList(interestListStrings);
+
+        if (readerRepo.findByReaderNumber(readerNumber).isPresent()) {
+            throw new ConflictException("Reader with number " + readerNumber + " already exists");
+        }
+
+        Reader reader = new Reader(username, "");
+        ReaderDetails readerDetails = new ReaderDetails(
+                readerNumber,
+                reader,
+                birthDate,
+                phoneNumber,
+                gdprConsent,
+                marketingConsent,
+                thirdPartyConsent,
+                null,
+                interestList
+        );
+
+        userRepo.save(reader);
+        return readerRepo.save(readerDetails);
+    }
+
+
+
+
+
+
 }

@@ -9,11 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-import pt.psoft.g1.psoftg1.bookmanagement.dto.request.GenreBookCountDTO;
-import pt.psoft.g1.psoftg1.bootstrapping.Entities;
 import pt.psoft.g1.psoftg1.genremanagement.dataModel.sql.GenreDataModel;
-import pt.psoft.g1.psoftg1.genremanagement.dto.GenreLendingsDTO;
-import pt.psoft.g1.psoftg1.genremanagement.dto.GenreLendingsPerMonthDTO;
+
 import pt.psoft.g1.psoftg1.genremanagement.mappers.DataModalSQLGenreMapper;
 import pt.psoft.g1.psoftg1.genremanagement.model.Genre;
 import pt.psoft.g1.psoftg1.genremanagement.repositories.GenreRepository;
@@ -53,89 +50,7 @@ public class GenreSQLRepo implements GenreRepository {
         return DataModalSQLGenreMapper.convertToDomainGenre(genreDataModel);
     }
 
-    @Override
-    public Page<GenreBookCountDTO> findTop5GenreByBookCount(Pageable pageable) {
-        /*
-        List<GenreBookCountDTO> results = entityManager.createQuery(
-                        "SELECT new pt.psoft.g1.psoftg1.bookmanagement.dto.request.GenreBookCountDTO(g.genre, COUNT(b)) " +
-                                "FROM GenreDataModel g JOIN g.BooksDataModel b " +
-                                "GROUP BY g.genre " +
-                                "ORDER BY COUNT(b) DESC", GenreBookCountDTO.class)
-                .setMaxResults(5)
-                .getResultList();
-        return new PageImpl<>(results, pageable, results.size());
 
-         */
-        List<Genre> genres =  Entities.getGenres().subList(0, 4);
-        List<GenreBookCountDTO> genresBookCount = genres.stream()
-                .map(genre -> new GenreBookCountDTO(genre.getGenre(), 2))
-                .toList();
-        return new PageImpl<>(genresBookCount, pageable, genresBookCount.size());
-    }
-
-    @Override
-    public List<GenreLendingsDTO> getAverageLendingsInMonth(LocalDate month, pt.psoft.g1.psoftg1.shared.services.Page page) {
-        /*
-        List<GenreLendingsDTO> results = entityManager.createQuery(
-                        "SELECT new pt.psoft.g1.psoftg1.genremanagement.dto.GenreLendingsDTO(g.genre, AVG(l.duration)) " +
-                                "FROM GenreDataModel g JOIN g.lendings l " +
-                                "WHERE MONTH(l.date) = :month AND YEAR(l.date) = :year " +
-                                "GROUP BY g.genre", GenreLendingsDTO.class)
-                .setParameter("month", month.getMonthValue())
-                .setParameter("year", month.getYear())
-                .setFirstResult(page.getOffset())
-                .setMaxResults(page.getSize())
-                .getResultList();
-        return results;
-
-         */
-        return null;
-    }
-
-    @Override
-    public List<GenreLendingsPerMonthDTO> getLendingsPerMonthLastYearByGenre() {
-        /*
-        return entityManager.createQuery(
-                        "SELECT new pt.psoft.g1.psoftg1.genremanagement.dto.GenreLendingsPerMonthDTO(g.genre, MONTH(l.date), COUNT(l)) " +
-                                "FROM GenreDataModel g JOIN g.lendings l " +
-                                "WHERE l.date >= :lastYear " +
-                                "GROUP BY g.genre, MONTH(l.date)", GenreLendingsPerMonthDTO.class)
-                .setParameter("lastYear", LocalDate.now().minusYears(1))
-                .getResultList();
-
-         */
-        return null;
-    }
-
-    @Override
-    public List<GenreLendingsPerMonthDTO> getLendingsAverageDurationPerMonth(LocalDate startDate, LocalDate endDate) {
-        /*
-        return entityManager.createQuery(
-                        "SELECT new pt.psoft.g1.psoftg1.genremanagement.dto.GenreLendingsPerMonthDTO(g.genre, MONTH(l.date), AVG(l.duration)) " +
-                                "FROM GenreDataModel g JOIN g.lendings l " +
-                                "WHERE l.date BETWEEN :startDate AND :endDate " +
-                                "GROUP BY g.genre, MONTH(l.date)", GenreLendingsPerMonthDTO.class)
-                .setParameter("startDate", startDate)
-                .setParameter("endDate", endDate)
-                .getResultList();
-
-         */
-        return null;
-    }
-
-    @Override
-    public List<Genre> getGenreWithMostLendings(int numberOfGenres) {
-        /*
-        List<GenreDataModel> genreDataModels = entityManager.createQuery(
-                        "SELECT g FROM GenreDataModel g ORDER BY (SELECT COUNT(l) FROM g.lendings l) DESC", GenreDataModel.class)
-                .setMaxResults(numberOfGenres)
-                .getResultList();
-        return genreDataModels.stream().map(this::mapToGenre).collect(Collectors.toList());
-    return null;
-
-         */
-        return Entities.getGenres().subList(0, numberOfGenres);
-    }
 
     @Override
     public void delete(Genre genre) {

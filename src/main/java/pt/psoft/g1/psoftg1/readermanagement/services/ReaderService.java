@@ -4,12 +4,14 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import pt.psoft.g1.psoftg1.readermanagement.dto.amkp.ReaderDTOAmqp;
 import pt.psoft.g1.psoftg1.readermanagement.dto.request.CreateReaderRequest;
 import pt.psoft.g1.psoftg1.readermanagement.dto.request.ReaderBookCountDTO;
 import pt.psoft.g1.psoftg1.readermanagement.dto.request.SearchReadersQuery;
 import pt.psoft.g1.psoftg1.readermanagement.dto.request.UpdateReaderRequest;
 import pt.psoft.g1.psoftg1.readermanagement.model.ReaderDetails;
 import pt.psoft.g1.psoftg1.shared.services.Page;
+import pt.psoft.g1.psoftg1.usermanagement.model.Reader;
 
 /**
  *
@@ -26,4 +28,6 @@ public interface ReaderService {
     //Optional<Reader> update(UpdateReaderRequest request) throws Exception;
     Optional<ReaderDetails> removeReaderPhoto(String readerNumber);
     List<ReaderDetails> searchReaders(Page page, SearchReadersQuery query);
+
+    ReaderDetails create(ReaderDTOAmqp readerDTOAmqp); // AMQP request
 }

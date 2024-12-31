@@ -33,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pt.psoft.g1.psoftg1.exceptions.ConflictException;
 import pt.psoft.g1.psoftg1.shared.repositories.ForbiddenNameRepository;
 import pt.psoft.g1.psoftg1.shared.services.Page;
+import pt.psoft.g1.psoftg1.usermanagement.dto.UserDTOAmqp;
 import pt.psoft.g1.psoftg1.usermanagement.model.Librarian;
 import pt.psoft.g1.psoftg1.usermanagement.model.Reader;
 import pt.psoft.g1.psoftg1.usermanagement.model.Role;
@@ -169,4 +170,18 @@ public class UserService implements UserDetailsService {
 		newUser.setEnabled(true);
 		return userRepo.save(newUser);
 	}
+
+	@Transactional
+	public User create(UserDTOAmqp userDTOAmqp) {
+		if (userRepo.findByUsername(userDTOAmqp.getUsername()).isPresent()) {
+			throw new ConflictException("Username already exists!");
+		}
+
+		User user = Reader.newReader(userDTOAmqp.getUsername(), "defaultPassword", userDTOAmqp.getFullName());
+		user.setPassword(passwordEncoder.encode("defaultPassword")); // Set a default password
+		user.setEnabled(true); // Enable the user by default
+
+		return userRepo.save(user);
+	}
+
 }
