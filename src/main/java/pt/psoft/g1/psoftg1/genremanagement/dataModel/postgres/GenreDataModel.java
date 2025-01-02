@@ -1,7 +1,7 @@
-package pt.psoft.g1.psoftg1.genremanagement.dataModel.sql;
+package pt.psoft.g1.psoftg1.genremanagement.dataModel.postgres;
 
 import jakarta.persistence.*;
-        import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -16,8 +16,9 @@ import lombok.Setter;
 public class GenreDataModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "GENRE_ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE) // Use SEQUENCE for PostgreSQL
+    @SequenceGenerator(name = "genre_seq", sequenceName = "genre_seq", allocationSize = 1)
+    @Column(name = "GENRE_ID", updatable = false, nullable = false)
     private Long pk;
 
     @Column(name = "GENRE", nullable = false, length = 100)
@@ -32,4 +33,3 @@ public class GenreDataModel {
         this.genre = genre;
     }
 }
-

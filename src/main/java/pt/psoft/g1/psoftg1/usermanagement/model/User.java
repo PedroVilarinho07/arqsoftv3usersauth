@@ -53,36 +53,31 @@ public class User implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
 
-	// database primary key
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.SEQUENCE) // Adicionado SEQUENCE
+	@SequenceGenerator(name = "user_seq", sequenceName = "user_seq", allocationSize = 1)
 	@Getter
-	@Column(name="USER_ID")
+	@Column(name = "USER_ID", updatable = false, nullable = false)
 	private Long id;
 
-	// optimistic lock concurrency control
 	@Version
 	private Long version;
 
-	// auditing info
 	@CreatedDate
 	@Column(nullable = false, updatable = false)
 	@Getter
 	private LocalDateTime createdAt;
 
-	// auditing info
 	@LastModifiedDate
 	@Column(nullable = false)
 	@Getter
 	private LocalDateTime modifiedAt;
 
-	// auditing info
 	@CreatedBy
 	@Column(nullable = false, updatable = false)
 	@Getter
 	private String createdBy;
 
-	// auditing info
 	@LastModifiedBy
 	@Column(nullable = false)
 	private String modifiedBy;
@@ -92,7 +87,7 @@ public class User implements UserDetails {
 	private boolean enabled = true;
 
 	@Setter
-    @Column(unique = true, /*updatable = false,*/ nullable = false)
+	@Column(unique = true, nullable = false)
 	@Email
 	@Getter
 	@NotNull
@@ -106,7 +101,6 @@ public class User implements UserDetails {
 	private String password;
 
 	@Getter
-//	@Setter
 	@Embedded
 	private Name name;
 
@@ -118,43 +112,17 @@ public class User implements UserDetails {
 		// for ORM only
 	}
 
-	/**
-	 *
-	 * @param username
-	 * @param password
-	 */
 	public User(final String username, final String password) {
 		this.username = username;
 		setPassword(password);
 	}
 
-	/**
-	 * factory method. since mapstruct does not handle protected/private setters
-	 * neither more than one public constructor, we use these factory methods for
-	 * helper creation scenarios
-	 *
-	 * @param username
-	 * @param password
-	 * @param name
-	 * @return
-	 */
 	public static User newUser(final String username, final String password, final String name) {
 		final var u = new User(username, password);
 		u.setName(name);
 		return u;
 	}
 
-	/**
-	 * factory method. since mapstruct does not handle protected/private setters
-	 * neither more than one public constructor, we use these factory methods for
-	 * helper creation scenarios
-	 *
-	 * @param username
-	 * @param password
-	 * @param name
-	 * @param role
-	 * @return
-	 */
 	public static User newUser(final String username, final String password, final String name, final String role) {
 		final var u = new User(username, password);
 		u.setName(name);
@@ -168,7 +136,7 @@ public class User implements UserDetails {
 		this.password = passwordEncoder.encode(password);
 	}
 
-    public void addAuthority(final Role r) {
+	public void addAuthority(final Role r) {
 		authorities.add(r);
 	}
 
@@ -187,7 +155,8 @@ public class User implements UserDetails {
 		return isEnabled();
 	}
 
-	public void setName(String name){
+	public void setName(String name) {
 		this.name = new Name(name);
 	}
 }
+

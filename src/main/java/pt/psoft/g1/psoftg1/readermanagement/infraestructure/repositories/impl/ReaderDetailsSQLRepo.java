@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-import pt.psoft.g1.psoftg1.readermanagement.dataModel.sql.ReaderDataModel;
+import pt.psoft.g1.psoftg1.readermanagement.dataModel.postgres.ReaderDataModel;
 import pt.psoft.g1.psoftg1.readermanagement.dto.request.ReaderBookCountDTO;
 import pt.psoft.g1.psoftg1.readermanagement.dto.request.SearchReadersQuery;
 import pt.psoft.g1.psoftg1.readermanagement.mappers.ReaderDetailsSQLMapper;

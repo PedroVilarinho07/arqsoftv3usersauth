@@ -1,4 +1,4 @@
-package pt.psoft.g1.psoftg1.readermanagement.dataModel.sql;
+package pt.psoft.g1.psoftg1.readermanagement.dataModel.postgres;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -15,8 +15,9 @@ import java.util.List;
 public class ReaderDataModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column (name = "PK")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE) // Use SEQUENCE for PostgreSQL
+    @SequenceGenerator(name = "reader_seq", sequenceName = "reader_seq", allocationSize = 1)
+    @Column(name = "PK", updatable = false, nullable = false)
     private Long pk;
 
     @Column(name = "READER_ID", unique = true, nullable = false)
@@ -67,4 +68,3 @@ public class ReaderDataModel {
         this.interestList = interestList;
     }
 }
-

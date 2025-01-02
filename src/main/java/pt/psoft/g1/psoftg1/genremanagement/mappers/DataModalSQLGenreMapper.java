@@ -1,6 +1,6 @@
 package pt.psoft.g1.psoftg1.genremanagement.mappers;
 
-import pt.psoft.g1.psoftg1.genremanagement.dataModel.sql.GenreDataModel;
+import pt.psoft.g1.psoftg1.genremanagement.dataModel.postgres.GenreDataModel;
 import pt.psoft.g1.psoftg1.genremanagement.model.Genre;
 
 import java.util.ArrayList;

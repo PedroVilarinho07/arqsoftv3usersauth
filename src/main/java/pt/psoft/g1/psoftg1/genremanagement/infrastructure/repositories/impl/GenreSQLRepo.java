@@ -5,18 +5,13 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import org.springframework.context.annotation.Profile;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-import pt.psoft.g1.psoftg1.genremanagement.dataModel.sql.GenreDataModel;
+import pt.psoft.g1.psoftg1.genremanagement.dataModel.postgres.GenreDataModel;
 
 import pt.psoft.g1.psoftg1.genremanagement.mappers.DataModalSQLGenreMapper;
 import pt.psoft.g1.psoftg1.genremanagement.model.Genre;
 import pt.psoft.g1.psoftg1.genremanagement.repositories.GenreRepository;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
