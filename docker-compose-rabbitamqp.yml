@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+    lms-rabbitamqp:
+        image: rabbitmq:3-management
+        restart: unless-stopped
+        ports:
+            - "5672:5672" # RabbitMQ main port
+            - "15672:15672" # RabbitMQ management UI
+        environment:
+            RABBITMQ_DEFAULT_USER: guest
+            RABBITMQ_DEFAULT_PASS: guest
+        networks:
+            - lms-overlay-network
+        healthcheck:
+            test: [ "CMD", "rabbitmqctl", "status" ]
+            interval: 10s
+            retries: 5
+            timeout: 5s
+        deploy:
+            replicas: 1
+            restart_policy:
+              condition: on-failure
+
+networks:
+    lms-overlay-network:
+        driver: overlay
