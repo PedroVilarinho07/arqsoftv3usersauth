@@ -14,8 +14,8 @@ FROM openjdk:21-jdk-slim
 
 WORKDIR /app
 
-ENV SERVER_PORT=9192
-EXPOSE 9192
+ENV SERVER_PORT=9196
+EXPOSE 9196
 
 COPY --from=build /app/target/*.jar app.jar
 
