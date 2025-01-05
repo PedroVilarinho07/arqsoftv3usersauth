@@ -24,8 +24,8 @@ services:
       - lms-overlay-network
 
 networks:
-    lms-overlay-network:
-        driver: overlay
+  lms-overlay-network:
+    external: true
 
 volumes:
   uploaded_files_volume_1:
