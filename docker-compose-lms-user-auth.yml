@@ -19,7 +19,7 @@ services:
     deploy:
       replicas: 1
     ports:
-      - "80895:8080" # Expose the lmsbooks service on port 8087
+      - "8090:8080" # Expose the lmsbooks service on port 8087
     networks:
       - lms-overlay-network
 
